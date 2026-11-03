@@ -23,7 +23,10 @@ export class GestorCorreos {
      this.borrador = this.borrador.filter(
       (b) => b.getId() !== correo.getId()
     );
-    this.enviados.push(correo);
+    const yaEnviado = this.enviados.some((e) => e.getId() === correo.getId());
+    if (!yaEnviado) {
+      this.enviados.push(correo);
+    }
     
 
   }

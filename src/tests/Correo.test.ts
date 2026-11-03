@@ -79,4 +79,22 @@ describe("Correo", () => {
         expect(gestor.obtenerEnviados()).toContain(correo);
     });
 
-});
+    test("no se generan correos duplicados", () => {
+        const gestor = new GestorCorreos();
+        const remitente = new Contacto("Carla", "carla@example.com");
+        const destinatario = new Contacto("José", "jose@example.com");
+        const correo = new Correo(
+            "1",
+            "Hola",
+            "Mensaje de prueba",
+            remitente,
+            [destinatario]
+        );
+
+        gestor.enviar(correo);
+        gestor.enviar(correo);
+
+        expect(gestor.obtenerEnviados()).toHaveLength(1);
+
+    });
+    });
