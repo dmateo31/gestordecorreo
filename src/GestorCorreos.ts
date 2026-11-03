@@ -16,10 +16,16 @@ const reglasDeEnvio: ReglasDeEnvio[] = [
 
 export class GestorCorreos {
   private enviados: Correo[] = [];
+  private borrador: Correo [] = [];
 
   public enviar(correo: Correo): void {
     this.validarCorreo(correo);
+     this.borrador = this.borrador.filter(
+      (b) => b.getId() !== correo.getId()
+    );
     this.enviados.push(correo);
+    
+
   }
 
     private validarCorreo(correo: Correo): void {
@@ -34,6 +40,14 @@ export class GestorCorreos {
 
   public obtenerEnviados(): Correo[] {
     return this.enviados;
+  }
+
+  public guardarBorrador(correo: Correo): void {
+    this.borrador.push(correo);
+  }
+
+  public obtenerBorrador(): Correo[] {
+    return this.borrador;
   }
 
 }

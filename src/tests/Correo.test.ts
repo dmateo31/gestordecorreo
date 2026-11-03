@@ -58,4 +58,25 @@ describe("Correo", () => {
 
     });
 
+    test("un correo enviado desde borradores deja de pertencer a la bandeja de borradores", () => {
+        const gestor = new GestorCorreos();
+        const remitente = new Contacto("Carla", "carla@example.com");
+        const destinatario = new Contacto("José", "jose@example.com");
+        const correo = new Correo(
+            "1",
+            "Hola",
+            "Mensaje de prueba",
+            remitente,
+            [destinatario]
+        );
+       
+        gestor.guardarBorrador(correo);
+        expect(gestor.obtenerBorrador()).toContain(correo);
+
+        gestor.enviar(correo);
+
+        expect(gestor.obtenerBorrador()).not.toContain(correo);
+        expect(gestor.obtenerEnviados()).toContain(correo);
+    });
+
 });
