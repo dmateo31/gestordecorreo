@@ -1,13 +1,15 @@
 import { Contacto } from "./Contacto";
 import { IIdentificable } from "./interfaces/IIdentificable";
 import { ILeible } from "./interfaces/ILeible";
-export class Correo implements IIdentificable, ILeible {
+import { IMarcableFavorito } from "./interfaces/IMarcableFavorito";
+export class Correo implements IIdentificable, ILeible, IMarcableFavorito {
   private id: string = "";
   private asunto: string = "";
   private cuerpo: string = "";
   private remitente!: Contacto;
   private destinatarios: Contacto[] = [];
   private leido: boolean = false;
+  private favorito: boolean = false;
 
   constructor(
     id: string,
@@ -76,5 +78,20 @@ export class Correo implements IIdentificable, ILeible {
 
   private setLeido(leido: boolean): void {
     this.leido = leido;
+  }
+  public marcarComoFavorito(): void {
+    this.setFavorito(true);
+  }
+
+  public desmarcarComoFavorito(): void {
+    this.setFavorito(false);
+  }
+
+  public esFavorito(): boolean {
+    return this.favorito;
+  }
+
+  private setFavorito(favorito: boolean): void {
+    this.favorito = favorito;
   }
 }
