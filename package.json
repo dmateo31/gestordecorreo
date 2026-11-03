@@ -1,0 +1,16 @@
+{
+  "name": "sistema-correos",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0"
+  },
+  "allowScripts": {
+    "esbuild@0.21.5": true
+  }
+}
