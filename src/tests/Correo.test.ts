@@ -21,4 +21,25 @@ describe("Correo", () => {
     expect(gestor.obtenerEnviados()).toContain(correo);
 
  });
+
+  test("se envia el correo a multiples destinatarios", () => {
+    const gestor = new GestorCorreos();
+    const remitente = new Contacto("Carla", "carla@example.com");
+    const destinatario1 = new Contacto("José", "jose@example.com");
+    const destinatario2 = new Contacto("Mateo", "mateo@example.com");
+    const destinatario3 = new Contacto("Candela", "candela|@example.com");
+
+    const correo = new Correo(
+      "1",
+      "Hola",
+      "Mensaje de prueba",
+      remitente,
+      [destinatario1, destinatario2, destinatario3]
+    );
+    gestor.enviar(correo);
+
+ const enviados = gestor.obtenerEnviados();
+    expect(enviados).toContain(correo);
+    expect(enviados[0].getDestinatarios()).toHaveLength(3);  });
+
 });
