@@ -1,12 +1,13 @@
 import { Contacto } from "./Contacto";
 import { IIdentificable } from "./interfaces/IIdentificable";
-
-export class Correo implements IIdentificable {
+import { ILeible } from "./interfaces/ILeible";
+export class Correo implements IIdentificable, ILeible {
   private id: string = "";
   private asunto: string = "";
   private cuerpo: string = "";
   private remitente!: Contacto;
   private destinatarios: Contacto[] = [];
+  private leido: boolean = false;
 
   constructor(
     id: string,
@@ -60,5 +61,20 @@ export class Correo implements IIdentificable {
 
   public setDestinatarios(destinatarios: Contacto[]): void {
     this.destinatarios = [...destinatarios];
+  }
+  public marcarComoLeido(): void {
+    this.setLeido(true);
+  }
+
+  public marcarComoNoLeido(): void {
+    this.setLeido(false);
+  }
+
+  public estaLeido(): boolean {
+    return this.leido;
+  }
+
+  private setLeido(leido: boolean): void {
+    this.leido = leido;
   }
 }
