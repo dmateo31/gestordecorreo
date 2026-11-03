@@ -1,14 +1,25 @@
+import { Contacto } from "./Contacto";
 import { IIdentificable } from "./interfaces/IIdentificable";
 
 export class Correo implements IIdentificable {
   private id: string = "";
   private asunto: string = "";
   private cuerpo: string = "";
+  private remitente!: Contacto;
+  private destinatarios: Contacto[] = [];
 
-  constructor(id: string, asunto: string, cuerpo: string) {
+  constructor(
+    id: string,
+    asunto: string,
+    cuerpo: string,
+    remitente: Contacto,
+    destinatarios: Contacto[]
+  ) {
     this.setId(id);
     this.setAsunto(asunto);
     this.setCuerpo(cuerpo);
+    this.setRemitente(remitente);
+    this.setDestinatarios(destinatarios);
   }
 
   public getId(): string {
@@ -33,5 +44,21 @@ export class Correo implements IIdentificable {
 
   public setCuerpo(cuerpo: string): void {
     this.cuerpo = cuerpo;
+  }
+
+  public getRemitente(): Contacto {
+    return this.remitente;
+  }
+
+  public setRemitente(remitente: Contacto): void {
+    this.remitente = remitente;
+  }
+
+  public getDestinatarios(): Contacto[] {
+    return [...this.destinatarios];
+  }
+
+  public setDestinatarios(destinatarios: Contacto[]): void {
+    this.destinatarios = [...destinatarios];
   }
 }
