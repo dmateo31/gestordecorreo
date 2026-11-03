@@ -43,12 +43,16 @@ describe("Correo", () => {
     expect(enviados[0].getDestinatarios()).toHaveLength(3); 
  });
 
- test("no se permite enviar un correo sin destinatarios", () => {
-    const gestor = new GestorCorreos();
-    const remitente = new Contacto("Carla", "carla@example.com");
-    const correo = new Correo("3", "Hola", "Sin destinatarios", remitente, []);
 
-    expect(() => gestor.enviar(correo)).toThrowError("El correo debe tener al menos un destinatario");
+     test("No se permiten enviar correos sin asunto y sin destinatarios", () => {
+     const gestor = new GestorCorreos();
+    const remitente = new Contacto("Carla", "carla@example.com");
+
+    const correo = new Correo("1", "", "Sin destinataios", remitente, []);
+
+    expect(() => gestor.enviar(correo)).toThrow(
+      "El correo debe tener al menos un destinatario; El correo debe tener un asunto válido"
+    );
     expect(gestor.obtenerEnviados()).toHaveLength(0);
 
 
