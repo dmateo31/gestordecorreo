@@ -39,9 +39,18 @@ describe("Gestor de correos", () => {
     );
 
     expect(agenda.obtenerContactos()).toHaveLength(1);
-
-
   });
 
+  test("Se pueden modificar contactos existentes", () => {
+    const agenda = new AgendaDeContactos();
+    const contacto = new Contacto("Jungkook", "jungkook@bts.arirang.ar");
+
+    agenda.agregarContacto(contacto);
+
+    agenda.modificarContacto("jungkook@bts.arirang.ar", "Jeon Jungkook", "jungkook@bts.loveyourself.ar");
+    expect(contacto.getNombre()).toBe("Jeon Jungkook");
+    expect(contacto.getEmail()).toBe("jungkook@bts.loveyourself.ar");
+
+  });
 
 });

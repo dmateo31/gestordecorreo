@@ -20,5 +20,14 @@ export class AgendaDeContactos {
         return this.contactos.find((contacto) => contacto.getEmail().toLowerCase === email.toLowerCase);
     }
 
+    public modificarContacto(email: string, nuevoNombre: string, nuevoEmail: string): void {
+        const contacto= this.buscarContactoPorEmail(email);
+        if (!contacto) {
+            throw new Error("No se encontró el contacto con el email proporcionado");
+        }
+        contacto.setNombre(nuevoNombre);
+        contacto.setEmail(nuevoEmail);
+    
+    }
 
 }
