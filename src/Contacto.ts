@@ -20,6 +20,10 @@ export class Contacto {
   }
 
   public setEmail(email: string): void {
-    this.email = email;
+    const formatoEmial = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formatoEmial.test(email)) {
+      throw new Error("El email no es válido");
+  }
+   this.email = email;
   }
 }
