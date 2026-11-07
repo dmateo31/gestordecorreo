@@ -1,6 +1,8 @@
 import {describe, expect, test} from "vitest";
 import {AgendaDeContactos} from "../AgendaDeContactos";
 import {Contacto} from "../Contacto";
+import {GestorCorreos} from "../GestorCorreos";
+import {Correo} from "../Correo";
 
 describe("Gestor de correos", () => {
   test("se agrega un contacto nuevo", () => {
@@ -80,4 +82,40 @@ describe("Gestor de correos", () => {
     expect(agenda.obtenerContactos()).toEqual([contacto2]);
 
   });
+
+  test("error al eliminar un contacto que no existe", () => {
+    const agenda = new AgendaDeContactos(); 
+
+    expect(() => agenda.eliminarContacto("nadie@bts.arirang.ar")).toThrow(
+        "No se encontró el contacto con el email proporcionado"
+    );
+});
+
+    test("si se elimina un contacto su historial de correo no desaparece", () => {
+        const agenda = new AgendaDeContactos();
+        const gestor = new GestorCorreos();
+        const contacto = new Contacto("Jungkook", "jungkook@bts.arirang.ar");
+        const contacto2 = new Contacto("Taehyung", "tae@.bts.arirang.ar");
+
+        agenda.agregarContacto(contacto);
+        agenda.agregarContacto(contacto2);
+
+        const correo = new Correo(
+            "1",
+            "Hola",
+            "Mensaje de prueba",
+            contacto,
+            [contacto2]
+        );
+        gestor.enviar(correo);
+
+        agenda.eliminarContacto("jungkook@bts.arirang.ar");
+
+        expect(agenda.buscarContactoPorEmail("jungkook@bts.arirang.ar")).toBeUndefined();
+        expect(gestor.obtenerEnviados()).toContain(correo);
+        expect(correo.getRemitente().getNombre()).toBe("Jungkook");
+        expect(correo.getRemitente().getEmail()).toBe("jungkook@bts.arirang.ar");
+
+    });
+
 });
