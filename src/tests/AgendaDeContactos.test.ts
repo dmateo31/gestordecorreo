@@ -53,4 +53,17 @@ describe("Gestor de correos", () => {
 
   });
 
+  test("no se permite modificar el contacto a uno que ya es usado por otro contacto", () => {
+    const agenda = new AgendaDeContactos();
+    agenda.agregarContacto(new Contacto("Jungkook", "jungkook@bts.arirang.ar"));
+    agenda.agregarContacto(new Contacto("Taehyung", "tae@bts.arirang.ar"));
+
+    expect(() =>
+        agenda.modificarContacto("tae@bts.arirang.ar", "Taehyung", "jungkook@bts.arirang.ar")
+        ).toThrow("Ya existe un contacto con este email");
+
+     expect(agenda.buscarContactoPorEmail("tae@bts.arirang.ar")).toBeDefined();
+
+  });
+
 });

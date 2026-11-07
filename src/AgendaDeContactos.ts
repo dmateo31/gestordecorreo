@@ -11,22 +11,28 @@ export class AgendaDeContactos {
     }
 
     public obtenerContactos(): Contacto[] {
-        return this.contactos;
+       return [...this.contactos];
     }
 
     public buscarContactoPorEmail(email: string): Contacto | undefined {
         //toLowerCase devuelve una copia del texto con todas las letras en miniqscula, esto es para que la busqueda no sea sensible a mayusculas y minusculas
         //ej: "JUNGKOOK@bts.arirang.ar".toLowerCase();  == "jungkook@bts.arirang.ar"
-        return this.contactos.find((contacto) => contacto.getEmail().toLowerCase === email.toLowerCase);
+        return this.contactos.find((contacto) => contacto.getEmail().toLowerCase() === email.toLowerCase());
     }
 
     public modificarContacto(email: string, nuevoNombre: string, nuevoEmail: string): void {
         const contacto= this.buscarContactoPorEmail(email);
-        if (!contacto) {
+         if (!contacto) {
             throw new Error("No se encontró el contacto con el email proporcionado");
         }
-        contacto.setNombre(nuevoNombre);
+
+     const otro = this.buscarContactoPorEmail(nuevoEmail);
+        if (otro && otro !== contacto) {
+            throw new Error("Ya existe un contacto con este email");
+        }
+
         contacto.setEmail(nuevoEmail);
+        contacto.setNombre(nuevoNombre);
     
     }
 
