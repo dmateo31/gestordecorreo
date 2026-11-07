@@ -60,5 +60,11 @@ export class GestorCorreos {
     return [...this.bandejaDeEntrada];
   }
 
+  public buscar(asunto: string): Correo[] {
+    return this.bandejaDeEntrada.filter((correo) =>
+      correo.getAsunto().includes(asunto)
+    );
+  }
+
 
 }
