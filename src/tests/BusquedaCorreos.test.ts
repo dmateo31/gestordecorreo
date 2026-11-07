@@ -206,4 +206,65 @@ describe ("Busqueda de correos", () => {
 
 
         });
+
+    test("no devuelve nada cuando no se encuentran coincidencias" , () => {
+        const gestor = new GestorCorreos();
+        const remitente = new Contacto("Jeon Jungkook", "jungkook@bts.arirang.ar");
+        const destinatario= new Contacto ("Namjoon", "namjoon@bts.arirang.ar");
+     
+
+        const correo = new Correo(
+            "24",
+            "ese es jungkook",
+            "Jungkook con la casaca argentina",
+            remitente,
+            [destinatario]
+        );
+
+          const correo2 = new Correo(
+            "21",
+            "BTS llego  a Argentina",
+            "BTS se prepara para su primer concierto en Argentina",
+            remitente,
+            [destinatario]
+        );
+
+        gestor.recibirCorreo(correo);
+        gestor.recibirCorreo(correo2);
+
+        expect(gestor.buscar("amorio entre jennie y tae")).toEqual([]);
      });
+
+    test("devuelve vacio al buscar en una bandeja vacía", () => {
+        const gestor = new GestorCorreos();
+
+        expect(gestor.buscar("cualquier cosa")).toEqual([]);
+     });
+
+     test("la busqueda no modifica nada de los correo originales" , () => {
+        const gestor = new GestorCorreos();
+        const remitente = new Contacto("Jeon Jungkook", "jungkook@bts.arirang.ar");
+        const destinatario= new Contacto ("Namjoon", "namjoon@bts.arirang.ar");
+        
+
+        const correo = new Correo(
+            "24",
+            "ese es jungkook",
+            "Jungkook con la casaca argentina",
+            remitente,
+            [destinatario]
+        );
+        correo.marcarComoFavorito();
+        gestor.recibirCorreo(correo);
+
+        gestor.buscar("CASACA");
+
+        expect(correo.getAsunto()).toBe("ese es jungkook");
+        expect(correo.getCuerpo()).toBe("Jungkook con la casaca argentina");
+        expect(correo.getRemitente()).toBe(remitente);
+        expect(correo.getDestinatarios()).toEqual([destinatario]);
+        expect(correo.estaLeido()).toBe(false);
+        expect(correo.esFavorito()).toBe(true);
+        expect(gestor.obtenerBandejaDeEntrada()).toEqual([correo]);
+     });
+});
