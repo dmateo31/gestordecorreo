@@ -36,4 +36,13 @@ export class AgendaDeContactos {
     
     }
 
+    public eliminarContacto(email: string): void {
+        const contacto = this.buscarContactoPorEmail(email);
+        if (!contacto) {
+            throw new Error("No se encontró el contacto con el email proporcionado");
+        }
+        //se queda con los contactos que no sean el contacto a eliminar, genera uan nueva lista sin ese contacto
+        this.contactos = this.contactos.filter((c) => c !== contacto);
+
+}
 }

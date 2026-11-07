@@ -66,4 +66,18 @@ describe("Gestor de correos", () => {
 
   });
 
+  test("se puede eliminar un constacto de la agenda", () => {
+    const agenda = new AgendaDeContactos();
+    const contacto = new Contacto("Jungkook", "jungkook@bts.arirang.ar");
+    const contacto2 = new Contacto("Taehyung", "tae@bts.arirang.ar");
+
+    agenda.agregarContacto(contacto);
+    agenda.agregarContacto(contacto2);
+
+    agenda.eliminarContacto("jungkook@bts.arirang.ar");
+
+    expect(agenda.buscarContactoPorEmail("jungkook@bts.arirang.ar")).toBeUndefined();
+    expect(agenda.obtenerContactos()).toEqual([contacto2]);
+
+  });
 });
