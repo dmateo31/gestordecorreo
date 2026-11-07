@@ -11,6 +11,9 @@ export class AgendaDeContactos {
         return this.contactos;
     }
 
-    
+    public buscarContactoPorEmail(email: string): Contacto | undefined {
+        return this.contactos.find((contacto) => contacto.getEmail() === email);
+    }
+
 
 }

@@ -10,6 +10,15 @@ describe("Gestor de correos", () => {
     agenda.agregarContacto(contacto);
     expect(agenda.obtenerContactos()).toContain(contacto);
 
+  });
+
+  test("se puede buscar un contacto por su email", () => {
+    const agenda = new AgendaDeContactos();
+    const contacto = new Contacto("Jungkook", "jungkook@bts.arirang.ar");
+
+    agenda.agregarContacto(contacto);
+
+    expect(agenda.buscarContactoPorEmail("jungkook@bts.arirang.ar")).toBe(contacto);
 
   });
 });
