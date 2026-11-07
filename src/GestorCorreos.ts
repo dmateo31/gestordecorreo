@@ -60,11 +60,18 @@ export class GestorCorreos {
     return [...this.bandejaDeEntrada];
   }
 
-  public buscar(asunto: string): Correo[] {
-    return this.bandejaDeEntrada.filter((correo) =>
-      correo.getAsunto().includes(asunto)
+   public buscar(formato: string): Correo[] {
+    const formatoBuscado = formato.toLowerCase();
+    return this.bandejaDeEntrada.filter(
+      (correo) =>{
+      const remitente = correo.getRemitente();
+      return (
+        correo.getAsunto().toLowerCase().includes(formatoBuscado) ||
+        correo.getCuerpo().toLowerCase().includes(formatoBuscado) ||
+        remitente.getNombre().toLowerCase().includes(formatoBuscado) ||
+        remitente.getEmail().toLowerCase().includes(formatoBuscado)
     );
-  }
+  });
 
-
+   }
 }
