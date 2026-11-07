@@ -144,4 +144,66 @@ describe ("Busqueda de correos", () => {
 
     });
 
+    test("se encuentran correos por su destinatario", () => {
+        const gestor = new GestorCorreos();
+        const remitente = new Contacto("Namjoon", "namjoon@bts.arirang.ar");
+        const jungkook = new Contacto("Jeon Jungkook", "jungkook@bts.arirang.ar");
+        const tae = new Contacto("Taehyung", "tae@bts.arirang.ar");
+        const jimin = new Contacto("Jimin", "jimin@bts.arirang.ar");
+
+        const correoparaJK = new Correo(
+            "24",
+            "El mejor concierto",
+            "BTS con la casaca argentina",
+            remitente,
+            [jungkook]
+        );
+
+        const correoparaJMyTH = new Correo(
+            "21",
+            "BTS llego  a Argentina",
+            "BTS se prepara para su primer concierto en Argentina",
+            remitente,
+            [jimin, tae]
+        );
+
+        gestor.recibirCorreo(correoparaJK);
+        gestor.recibirCorreo(correoparaJMyTH);
+
+        expect(gestor.buscar("Jungkook")).toEqual([correoparaJK]);
+        expect(gestor.buscar("tae@bts.arirang.ar")).toEqual([correoparaJMyTH]);
     });
+
+    test("un correo que coincide en varios campos aparece una soal vex", () => {
+        const gestor = new GestorCorreos();
+        const JK = new Contacto("Jeon Jungkook", "jungkook@bts.arirang.ar");
+        const nam = new Contacto ("Namjoon", "namjoon@bts.arirang.ar");
+        const tae = new Contacto("Taehyung", "tae@bts.arirang.ar");
+
+        const correo = new Correo(
+            "24",
+            "ese es jungkook",
+            "Jungkook con la casaca argentina",
+            JK,
+            [nam]
+        );
+
+          const correo2 = new Correo(
+            "21",
+            "BTS llego  a Argentina",
+            "BTS se prepara para su primer concierto en Argentina",
+            tae,
+            [nam]
+        );
+
+        gestor.recibirCorreo(correo);
+        gestor.recibirCorreo(correo2);
+
+        const Buscar = gestor.buscar("jungkook")
+
+        expect(Buscar).toHaveLength(1);
+        expect(Buscar).toEqual([correo]);
+
+
+        });
+     });
