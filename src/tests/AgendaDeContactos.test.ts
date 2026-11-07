@@ -4,7 +4,7 @@ import {Contacto} from "../Contacto";
 import {GestorCorreos} from "../GestorCorreos";
 import {Correo} from "../Correo";
 
-describe("Gestor de correos", () => {
+describe("Agenda de contactos", () => {
   test("se agrega un contacto nuevo", () => {
     const agenda = new AgendaDeContactos();
     const contacto = new Contacto ("Jungkook", "jungkook@bts.arirang.ar");
@@ -101,9 +101,9 @@ describe("Gestor de correos", () => {
         agenda.agregarContacto(contacto2);
 
         const correo = new Correo(
-            "1",
-            "Hola",
-            "Mensaje de prueba",
+            "24",
+            "El mejor concierto",
+            "BTS con la casaca argentina",
             contacto,
             [contacto2]
         );
