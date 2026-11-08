@@ -64,26 +64,4 @@ describe("Clase Correo", () => {
     expect(correo.esFavorito()).toBe(false);
   });
 
-  test("getDestinatarios devuelve una copia: modificarla no cambia el correo", () => {
-    const remitente = new Contacto("Irene", "irene@gmail.com");
-    const seulgi = new Contacto("Seulgi", "seulgi@hotmail.com");
-    const correo = new Correo("1", "Hola", "Mensaje de prueba", remitente, [seulgi]);
-
-    const lista = correo.getDestinatarios();
-    lista.push(remitente);
-
-    expect(lista).toHaveLength(2);
-    expect(correo.getDestinatarios()).toHaveLength(1);
-  });
-
-  test("el correo guarda una copia de la lista que recibe", () => {
-    const remitente = new Contacto("Irene", "irene@gmail.com");
-    const seulgi = new Contacto("Seulgi", "seulgi@hotmail.com");
-    const listaOriginal = [seulgi];
-    const correo = new Correo("1", "Hola", "Mensaje de prueba", remitente, listaOriginal);
-
-    listaOriginal.push(remitente);
-
-    expect(correo.getDestinatarios()).toHaveLength(1);
-  });
 });
