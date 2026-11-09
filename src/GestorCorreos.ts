@@ -2,6 +2,11 @@ import{Correo} from "./Correo";
 import { Bandeja } from "./Bandeja";
 import { IFiltrador } from "./interfaces/IFiltrador";
 import { lanzarError, validarReglas } from "./Reglas";
+import { Contacto } from "./Contacto";
+import { GeneradorIdSecuencial } from "./GeneradorIdSecuencial";
+import { IGeneradorId } from "./interfaces/IGeneradorId";
+
+
 
 type ReglasDeEnvio = (correo: Correo) => string | null;
 
@@ -213,5 +218,16 @@ export class GestorCorreos {
         )
       );
     });
+  }
+
+
+  constructor (
+    private readonly generadorId : IGeneradorId = new GeneradorIdSecuencial()
+  ){}
+
+  public iniciarBorrador(remitente:Contacto): Correo{
+    const borrador = new Correo(this.generadorId.generarID(), "", "", remitente, []);
+    this.guardarBorrador(borrador);
+    return borrador;
   }
 }
