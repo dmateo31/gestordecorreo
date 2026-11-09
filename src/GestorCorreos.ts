@@ -5,6 +5,7 @@ import { lanzarError, validarReglas } from "./Reglas";
 import { Contacto } from "./Contacto";
 import { GeneradorIdSecuencial } from "./GeneradorIdSecuencial";
 import { IGeneradorId } from "./interfaces/IGeneradorId";
+import { TestRunner } from "vitest";
 
 
 
@@ -229,5 +230,13 @@ export class GestorCorreos {
     const borrador = new Correo(this.generadorId.generarID(), "", "", remitente, []);
     this.guardarBorrador(borrador);
     return borrador;
+  }
+
+  public recuperarBorrador (id:string): Correo{
+    return (
+      this.borrador.find((b) => b.getId() === id) ??
+      lanzarError("No existe un borrador con id ${id}`")
+    )
+
   }
 }
