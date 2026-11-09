@@ -235,7 +235,7 @@ export class GestorCorreos {
   public recuperarBorrador (id:string): Correo{
     return (
       this.borrador.find((b) => b.getId() === id) ??
-      lanzarError("No existe un borrador con id ${id}`")
+      lanzarError(`No existe un borrador con id ${id}`)
     )
 
   }
