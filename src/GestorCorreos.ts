@@ -8,6 +8,11 @@ import { IGeneradorId } from "./interfaces/IGeneradorId";
 import { TestRunner } from "vitest";
 
 
+export type CambiosDeBorrador = {
+  asunto?: string;
+  cuerpo?: string;
+  destinatarios?: Contacto[];
+};
 
 type ReglasDeEnvio = (correo: Correo) => string | null;
 
@@ -237,6 +242,17 @@ export class GestorCorreos {
       this.borrador.find((b) => b.getId() === id) ??
       lanzarError(`No existe un borrador con id ${id}`)
     )
+
+  }
+
+  public editarBorrador (id: string, cambios: CambiosDeBorrador): Correo{
+    const borrador = this.recuperarBorrador(id);
+    if (cambios.asunto !== undefined) borrador.setAsunto(cambios.asunto);
+    if (cambios.cuerpo !== undefined) borrador.setCuerpo(cambios.cuerpo);
+    if (cambios.destinatarios !== undefined) borrador.setDestinatarios(cambios.destinatarios);
+
+    return borrador;
+
 
   }
 }
