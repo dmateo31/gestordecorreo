@@ -5,7 +5,8 @@ import { lanzarError, validarReglas } from "./Reglas";
 import { Contacto } from "./Contacto";
 import { GeneradorIdSecuencial } from "./GeneradorIdSecuencial";
 import { IGeneradorId } from "./interfaces/IGeneradorId";
-import { TestRunner } from "vitest";
+import { no } from "./Combinadores";
+import { estaLeido } from "./Predicados";
 
 
 export type CambiosDeBorrador = {
@@ -134,6 +135,10 @@ export class GestorCorreos {
   //Se pide la interfaz IFiltrador, así sirve cualquier filtro y no solo la clase Filtro
   public filtrar(bandeja: Bandeja, filtro: IFiltrador): Correo[] {
     return filtro.aplicar(this.obtenerBandeja(bandeja));
+  }
+
+  public obtenerNoLeido(bandeja : Bandeja): Correo[] {
+    return this.obtenerBandeja(bandeja).filter(no(estaLeido));
   }
 
   //cada correo está en una sola bandeja, se lo identifica por su id. Si no está en ninguna devuelve undefined
