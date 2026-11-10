@@ -232,7 +232,7 @@ describe ("Busqueda de correos", () => {
         gestor.recibirCorreo(correo);
         gestor.recibirCorreo(correo2);
 
-        expect(gestor.buscar("amorio entre jennie y tae")).toEqual([]);
+        expect(gestor.buscar("BTS argentina 2016")).toEqual([]);
      });
 
     test("devuelve vacio al buscar en una bandeja vacía", () => {

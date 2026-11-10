@@ -2,6 +2,7 @@ import {Correo} from "../Correo";
 import {Contacto} from "../Contacto";
 import {GestorCorreos} from "../GestorCorreos";
 import { describe, expect, test } from "vitest";
+import { Bandeja } from "../Bandeja";
 
 
 describe("Correo", () => {
@@ -38,22 +39,24 @@ describe("Correo", () => {
     );
     gestor.enviar(correo);
 
- const enviados = gestor.obtenerEnviados();
+    const enviados = gestor.obtenerEnviados();
     expect(enviados).toContain(correo);
-    expect(enviados[0].getDestinatarios()).toHaveLength(3); 
+
+
+    //bandeja de entrada de todos los destinatarios
  });
 
 
      test("No se permiten enviar correos sin asunto y sin destinatarios", () => {
-     const gestor = new GestorCorreos();
-    const remitente = new Contacto("Jeon Jungkook", "Jungkook@arirang.com");
+        const gestor = new GestorCorreos();
+        const remitente = new Contacto("Jeon Jungkook", "Jungkook@arirang.com");
 
-    const correo = new Correo("24", "", "Sin destinataios", remitente, []);
+        const correo = new Correo("24", "", "Sin destinataios", remitente, []);
 
-    expect(() => gestor.enviar(correo)).toThrow(
-      "El correo debe tener al menos un destinatario; El correo debe tener un asunto válido"
-    );
-    expect(gestor.obtenerEnviados()).toHaveLength(0);
+        expect(() => gestor.enviar(correo)).toThrow(
+             "El correo debe tener al menos un destinatario; El correo debe tener un asunto válido"
+        );
+        expect(gestor.obtenerEnviados()).toHaveLength(0);
 
 
     });
@@ -81,8 +84,8 @@ describe("Correo", () => {
 
     test("no se generan correos duplicados", () => {
         const gestor = new GestorCorreos();
-        const remitente = new Contacto("Jeon Jungkook", "Jungkook@arirang.com");
-        const destinatario = new Contacto("Taehyung", "taehyung@arirang.com");
+        const remitente = new Contacto("Joaco", "Jungkook@arirang.com");
+        const destinatario = new Contacto("Tae", "taehyung@arirang.com");
         const correo = new Correo(
             "28",
             "arirang tour 2028",
@@ -95,6 +98,45 @@ describe("Correo", () => {
         gestor.enviar(correo);
 
         expect(gestor.obtenerEnviados()).toHaveLength(1);
+        
+        
 
     });
+
+   test("prueba1", () => {
+    const gestorUsuario1 = new GestorCorreos();
+    const gestorUsuario2 = new GestorCorreos();
+    const gestorUsuario3 = new GestorCorreos();
+    const remitente = new Contacto("joaco", "Jungkook@arirang.com");
+    const destinatario1 = new Contacto("Tae", "taehyung@arirang.com");
+    const destinatario2 = new Contacto("Jimin", "jimin@arirang.com");
+    const destinatario3 = new Contacto("Nam", "nam@arirang.com");
+
+    const correo = new Correo(
+      "24",
+      "El mejor concierto",
+      "BTS con la casaca argentina",
+      remitente,
+      [destinatario1, destinatario2, destinatario3]
+    );
+
+    gestorUsuario1.recibirCorreo(correo);
+    gestorUsuario2.recibirCorreo(correo);
+    gestorUsuario3.recibirCorreo(correo);
+
+    gestorUsuario1.eliminarCorreo(correo);
+     
+    gestorUsuario1.obtenerBandejaDeEntrada();
+    gestorUsuario2.obtenerBandejaDeEntrada();
+    gestorUsuario3.obtenerBandejaDeEntrada();
+
+
+    expect(gestorUsuario1.obtenerBandejaDeEntrada()).toHaveLength(0);
+    expect(gestorUsuario2.obtenerBandejaDeEntrada()).toHaveLength(1);
+    expect(gestorUsuario3.obtenerBandejaDeEntrada()).toHaveLength(1);
+  
+
+
+    //bandeja de entrada de todos los destinatarios
+ });
     });

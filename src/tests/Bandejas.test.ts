@@ -132,4 +132,6 @@ describe("Bandejas de correo", () => {
     expect(gestor.obtenerBorrador()).toHaveLength(1);
     expect(gestor.obtenerBandeja(Bandeja.ENTRADA)).toHaveLength(1);
   });
+
+  
 });
