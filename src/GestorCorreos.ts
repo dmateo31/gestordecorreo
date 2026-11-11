@@ -1,5 +1,4 @@
-import{Correo} from "./Correo";
-import { Bandeja } from "./Bandeja";
+import{Correo} from "./Correo";import { Bandeja } from "./Bandeja";
 import { IFiltrador } from "./interfaces/IFiltrador";
 import { lanzarError, validarReglas } from "./Reglas";
 import { Contacto } from "./Contacto";
@@ -34,7 +33,7 @@ const reglasDeEnvio: ReglasDeEnvio[] = [
       : null,
 ];
 
-export class GestorCorreos {
+export class GestorCorreos  {
   private enviados: Correo[] = [];
   private borrador: Correo [] = [];
   private bandejaDeEntrada: Correo[] = [];
@@ -257,7 +256,7 @@ export class GestorCorreos {
     if (cambios.destinatarios !== undefined) borrador.setDestinatarios(cambios.destinatarios);
 
     return borrador;
-
-
   }
+
 }
+
