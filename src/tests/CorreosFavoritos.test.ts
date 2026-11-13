@@ -10,7 +10,7 @@ import { asuntoContiene, estaLeido, remitenteEs } from "../Predicados";
 describe("Gestión de correos favoritos", () => {
   const heejin = new Contacto("HeeJin", "heejin@gmail.com");
   const chuu = new Contacto("Chuu", "chuu@gmail.com");
-
+ const hyunjin = new Contacto("HyunJin", "hyunjin@gmail.com");
   const crearCorreo = (id: string, asunto: string = "Asunto " + id, remitente: Contacto = heejin): Correo =>
     new Correo(id, asunto, "Te paso los detalles para la reunión del viernes", remitente, [chuu]);
 
