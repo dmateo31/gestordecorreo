@@ -5,7 +5,7 @@ import { Contacto } from "./Contacto";
 import { GeneradorIdSecuencial } from "./GeneradorIdSecuencial";
 import { IGeneradorId } from "./interfaces/IGeneradorId";
 import { no } from "./Combinadores";
-import { estaLeido } from "./Predicados";
+import { esFavorito, estaLeido } from "./Predicados";
 
 
 export type CambiosDeBorrador = {
@@ -139,14 +139,34 @@ export class GestorCorreos  {
   public obtenerNoLeido(bandeja : Bandeja): Correo[] {
     return this.obtenerBandeja(bandeja).filter(no(estaLeido));
   }
-
+  //vista especial de favoritos: junta los correos favoritos de todas las bandejas menos Eliminados.
+  //Cada correo está en una sola bandeja, así que no puede aparecer repetido, y marcarlo como favorito no lo mueve.
+  //Un favorito eliminado sigue marcado, pero recién vuelve a esta vista cuando se lo restaura
+  //los filtros se aplican uno detrás de otro sobre los favoritos (equivale a combinarlos con AND).
+  //Sin filtros devuelve todos los favoritos
+  public filtrarFavoritos(...filtros: IFiltrador[]): Correo[] {
+    return filtros.reduce(
+      (correos, filtro) => filtro.aplicar(correos),
+      this.obtenerFavoritos()
+    );
+  }
+  public obtenerFavoritos(): Correo[] {
+    return this.obtenerBandejasVisibles()
+      .flatMap((bandeja) => this.obtenerBandeja(bandeja))
+      .filter(esFavorito);
+  }
   //cada correo está en una sola bandeja, se lo identifica por su id. Si no está en ninguna devuelve undefined
   public obtenerBandejaDe(correo: Correo): Bandeja | undefined {
     return Object.values(Bandeja).find((bandeja) =>
       this.obtenerListaDe(bandeja).some((c) => c.getId() === correo.getId())
     );
   }
-
+ //todas las bandejas menos Eliminados, que no forma parte de las vistas habituales
+  private obtenerBandejasVisibles(): Bandeja[] {
+    return Object.values(Bandeja).filter(
+      (bandeja) => bandeja !== Bandeja.ELIMINADOS
+    );
+  }
   //se arma en cada llamada porque enviar() reemplaza la lista de borradores por una nueva
   private obtenerListaDe(bandeja: Bandeja): Correo[] {
     const listas: Record<Bandeja, Correo[]> = {
