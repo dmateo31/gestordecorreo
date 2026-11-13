@@ -8,7 +8,7 @@ describe("Restaurar correos", () => {
   const crearCorreo = (id: string): Correo => {
     const remitente = new Contacto("HeeJin", "heejin@gmail.com");
     const destinatario = new Contacto("Chuu", "chuu@gmail.com");
-    return new Correo(id, "El mejor concierto", "LOONA con la casaca argentina", remitente, [destinatario]);
+    return new Correo(id, "El mejor concierto", "LOONA son 12", remitente, [destinatario]);
   };
 
   test("un correo recibido vuelve a Entrada", () => {
