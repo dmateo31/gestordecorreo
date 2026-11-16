@@ -15,6 +15,13 @@ export type CambiosDeBorrador = {
   destinatarios?: Contacto[];
 };
 
+export type ResumenDeBandeja = {
+  total: number;
+  leidos: number;
+  noLeidos: number;
+  favoritos: number;
+};
+
 type ReglasDeEnvio = (correo: Correo) => string | null;
 
 type Movimiento = (correo: Correo) => void;
@@ -293,6 +300,20 @@ export class GestorCorreos  {
       (total, correo) => (condicion(correo) ? total + 1 : total),
       0
     );
+
+}
+  public obtenerResumen(bandeja: Bandeja): ResumenDeBandeja {
+    return this.obtenerBandeja(bandeja).reduce<ResumenDeBandeja>(
+      (resumen, correo) => ({
+        total: resumen.total + 1,
+        leidos: resumen.leidos + (estaLeido(correo) ? 1 : 0),
+        noLeidos: resumen.noLeidos + (estaLeido(correo) ? 0 : 1),
+        favoritos: resumen.favoritos + (esFavorito(correo) ? 1 : 0),
+      }),
+      { total: 0, leidos: 0, noLeidos: 0, favoritos: 0 }
+    );
+
+  
 
 }
 }

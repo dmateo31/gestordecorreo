@@ -222,6 +222,51 @@ import { asuntoContiene, esFavorito, estaLeido } from "../Predicados";
         expect(gestor.contarCorreos(Bandeja.ENTRADA, no(estaLeido))).toBe(0);
   });
 
+     test( "Resumen de correos leidos, no leidos y favs",() =>{
+        const gestor= new GestorCorreos();
+        const correo1 = crearCorreo("1", "BTS");
+        const correo2 = crearCorreo("2", "Arirang");
+        const correo3 = crearCorreo("3", "Tour");
+
+        gestor.recibirCorreo(correo1);
+        gestor.recibirCorreo(correo2);
+        gestor.recibirCorreo(correo3);
+
+        correo1.marcarComoLeido();
+        correo1.marcarComoFavorito();
+        correo2.marcarComoFavorito();
+
+        expect(gestor.obtenerResumen(Bandeja.ENTRADA)).toEqual({
+            total: 3,
+            leidos:1,
+            noLeidos: 2,
+            favoritos: 2,
+        });
+    });
+     
+    test( "no devuelve nada si la bandeja está vacia",() =>{
+        const gestor = new GestorCorreos();
+
+        expect(gestor.obtenerResumen(Bandeja.ENTRADA)).toEqual({
+            total: 0,
+            leidos:0,
+            noLeidos: 0,
+            favoritos:0,
+        });
+    });
+
+    test("solo resume la bandeja pedida", () => {
+        const gestor = new GestorCorreos();
+        const correo1 = crearCorreo("1", "BTS");
+        const correo2 = crearCorreo("2", "Arirang");
+
+        gestor.recibirCorreo(correo1);
+        gestor.enviar(correo2);
+
+        expect(gestor.obtenerResumen(Bandeja.ENVIADOS).total).toBe(1);
+  });
+
+
 });
 
 
