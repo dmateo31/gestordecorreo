@@ -278,5 +278,9 @@ export class GestorCorreos  {
     return borrador;
   }
 
+  public obtenerAsuntos(bandeja: Bandeja): string[] {
+    return this.obtenerBandeja(bandeja).map((correo) => correo.getAsunto());
+  }
+
 }
 
