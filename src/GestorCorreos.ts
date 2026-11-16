@@ -288,5 +288,12 @@ export class GestorCorreos  {
     return this.obtenerBandeja(bandeja).filter(condicion);
   }
 
+  public contarCorreos(bandeja: Bandeja, condicion: Predicado = () => true): number {
+    return this.obtenerBandeja(bandeja).reduce(
+      (total, correo) => (condicion(correo) ? total + 1 : total),
+      0
+    );
+
+}
 }
 

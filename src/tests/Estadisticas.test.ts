@@ -140,6 +140,88 @@ import { asuntoContiene, esFavorito, estaLeido } from "../Predicados";
         expect(gestor.obtenerBandeja(Bandeja.ENTRADA)).toHaveLength(2);
   });
 
+    test("sin condición cuenta todos los correos de la bandeja", () => {
+        const gestor = new GestorCorreos();
+
+        gestor.recibirCorreo(crearCorreo("1", "A"));
+        gestor.recibirCorreo(crearCorreo("2", "B"));
+        gestor.recibirCorreo(crearCorreo("3", "C"));
+
+        expect(gestor.contarCorreos(Bandeja.ENTRADA)).toBe(3);
+  });
+
+  test("con condición cuenta solo los que la cumplen", () => {
+    const gestor = new GestorCorreos();
+    const correo1 = crearCorreo("1", "BTS");
+    const correo2 = crearCorreo("2", "Arirang");
+
+    gestor.recibirCorreo(correo1);
+    gestor.recibirCorreo(correo2);
+    correo1.marcarComoLeido();
+
+    expect(gestor.contarCorreos(Bandeja.ENTRADA, estaLeido)).toBe(1);
+    expect(gestor.contarCorreos(Bandeja.ENTRADA, no(estaLeido))).toBe(1);
+  });
+
+  test("devuelve 0 si la bandeja está vacía", () => {
+    const gestor = new GestorCorreos();
+
+    expect(gestor.contarCorreos(Bandeja.ENTRADA)).toBe(0);
+    expect(gestor.contarCorreos(Bandeja.ENTRADA, estaLeido)).toBe(0);
+  });
+
+  test("devuelve 0 si ninguno cumple la condición", () => {
+    const gestor = new GestorCorreos();
+    gestor.recibirCorreo(crearCorreo("1", "BTS"));
+
+    expect(gestor.contarCorreos(Bandeja.ENTRADA, esFavorito)).toBe(0);
+  });
+
+  test("acepta condiciones combinadas", () => {
+        const gestor = new GestorCorreos();
+        const correo1 = crearCorreo("1", "BTS");
+        const correo2 = crearCorreo("2", "BTS");
+        const correo3 = crearCorreo("3", "Arirang");
+
+        gestor.recibirCorreo(correo1);
+        gestor.recibirCorreo(correo2);
+        gestor.recibirCorreo(correo3);
+
+        correo1.marcarComoFavorito();
+        correo2.marcarComoFavorito();
+        correo3.marcarComoLeido();
+
+        expect(
+            gestor.contarCorreos(
+            Bandeja.ENTRADA,
+            y(asuntoContiene("BTS"), esFavorito, no(estaLeido))
+            )
+        ).toBe(2);
+  });
+
+  test("solo cuenta los correos de la bandeja pedida", () => {
+        const gestor = new GestorCorreos();
+
+        gestor.recibirCorreo(crearCorreo("1", "BTS"));
+        gestor.enviar(crearCorreo("2", "Arirang"));
+
+        expect(gestor.contarCorreos(Bandeja.ENTRADA)).toBe(1);
+        expect(gestor.contarCorreos(Bandeja.ENVIADOS)).toBe(1);
+  });
+
+  test("el conteo refleja los cambios de estado sin guardar nada", () => {
+        const gestor = new GestorCorreos();
+        const correo = crearCorreo("1", "BTS");
+
+        gestor.recibirCorreo(correo);
+
+        expect(gestor.contarCorreos(Bandeja.ENTRADA, no(estaLeido))).toBe(1);
+
+        correo.marcarComoLeido();
+
+        expect(gestor.contarCorreos(Bandeja.ENTRADA, no(estaLeido))).toBe(0);
+  });
+
 });
 
 
