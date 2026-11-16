@@ -1,9 +1,10 @@
 import { describe, expect, test } from "vitest";
+import { Bandeja } from "../Bandeja";
+import { no, o, y } from "../Combinadores";
 import { Contacto } from "../Contacto";
 import { Correo } from "../Correo";
 import { GestorCorreos } from "../GestorCorreos";
-import { Bandeja } from "../Bandeja";
-
+import { asuntoContiene, esFavorito, estaLeido } from "../Predicados";
  describe( "Procesamiento funcional: obtener asuntos con map",() =>{
 
     const remitente = new Contacto("Jeon Jungkook", "Jungkook@arirang.com");
@@ -59,6 +60,33 @@ import { Bandeja } from "../Bandeja";
         expect(correo.getAsunto()).toBe("Arirang");
     });
 
-   
+     test( "devuelve solo los correos que cumplen la condición",() =>{
+        const gestor = new GestorCorreos();
+        const correo1 = crearCorreo ("1", "Arirang");
+        const correo2 = crearCorreo ("2", "BTS");
+
+        gestor.recibirCorreo(correo1);
+        gestor.recibirCorreo(correo2);
+
+        expect(gestor.obtenerCorreosQueCumplen(Bandeja.ENTRADA, asuntoContiene("examen"))
+        ).toEqual([correo1]);
+    });
+
+    test("devuelve una lista vacía cuando ninguno cumple la condición", () => {
+        const gestor = new GestorCorreos();
+        gestor.recibirCorreo(crearCorreo("1", "Arirang"));
+
+        expect(
+            gestor.obtenerCorreosQueCumplen(Bandeja.ENTRADA, asuntoContiene("examen"))
+        ).toEqual([]);
 
     });
+
+
+    });
+
+
+
+   
+
+   

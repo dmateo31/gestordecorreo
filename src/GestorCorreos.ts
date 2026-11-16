@@ -5,7 +5,8 @@ import { Contacto } from "./Contacto";
 import { GeneradorIdSecuencial } from "./GeneradorIdSecuencial";
 import { IGeneradorId } from "./interfaces/IGeneradorId";
 import { no } from "./Combinadores";
-import { esFavorito, estaLeido } from "./Predicados";
+import { esFavorito, estaLeido, Predicado } from "./Predicados";
+
 
 
 export type CambiosDeBorrador = {
@@ -280,6 +281,11 @@ export class GestorCorreos  {
 
   public obtenerAsuntos(bandeja: Bandeja): string[] {
     return this.obtenerBandeja(bandeja).map((correo) => correo.getAsunto());
+  }
+
+   
+  public obtenerCorreosQueCumplen(bandeja: Bandeja, condicion: Predicado): Correo[] {
+    return this.obtenerBandeja(bandeja).filter(condicion);
   }
 
 }
